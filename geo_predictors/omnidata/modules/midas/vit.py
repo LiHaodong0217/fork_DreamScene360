@@ -477,12 +477,41 @@ def _make_vit_b_rn50_backbone(
     return pretrained
 
 
+# def _make_pretrained_vitb_rn50_384(
+#     pretrained, use_readout="ignore", hooks=None, use_vit_only=False
+# ):
+#     model = timm.create_model("vit_base_resnet50_384", pretrained=False)
+
+#     hooks = [0, 1, 8, 11] if hooks == None else hooks
+#     return _make_vit_b_rn50_backbone(
+#         model,
+#         features=[256, 512, 768, 768],
+#         size=[384, 384],
+#         hooks=hooks,
+#         use_vit_only=use_vit_only,
+#         use_readout=use_readout,
+#     )
+import torch
+import timm
+
 def _make_pretrained_vitb_rn50_384(
     pretrained, use_readout="ignore", hooks=None, use_vit_only=False
 ):
-    model = timm.create_model("vit_base_resnet50_384", pretrained=pretrained)
+    # 创建模型，不加载预训练权重
+    model = timm.create_model("vit_base_resnet50_384", pretrained=False)
 
-    hooks = [0, 1, 8, 11] if hooks == None else hooks
+    # 本地权重路径
+    model_path = "/public/home/cit_haodongli/DreamScene360/pre_checkpoints/jx_vit_base_resnet50_384-9fd3c705.pth"
+    
+    # 如果提供了 pretrained=True，则加载本地权重
+    if pretrained:
+        state_dict = torch.load(model_path)
+        model.load_state_dict(state_dict)
+
+    # 设置 hooks 的默认值
+    hooks = [0, 1, 8, 11] if hooks is None else hooks
+
+    # 返回构建的 Vit-RN50 Backbone
     return _make_vit_b_rn50_backbone(
         model,
         features=[256, 512, 768, 768],

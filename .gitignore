@@ -7,3 +7,10 @@ diff_rasterization/dist
 *.pt
 *.safetensors
 *.DS_Store
+pre_checkpoints
+SIBR_viewers
+submodules
+viewer_windows
+stitch_diffusion
+requirements
+README

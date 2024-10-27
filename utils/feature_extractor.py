@@ -7,6 +7,7 @@ from torchvision import transforms
 
 model =  torch.hub.load('facebookresearch/dinov2', 'dinov2_vitb14').cuda()
 
+
 def get_Feature_from_DinoV2(tensor, model = model):
     transform = Compose([
         transforms.Resize(504, interpolation=transforms.InterpolationMode.BICUBIC),
