@@ -135,8 +135,8 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             pred_depth = estimate_depth(perturbation_image)
             loss_perturbation_depth =   (1 - pearson_corrcoef(rendered_depth.reshape(-1, 1)[:, 0], - gt_depth.reshape(-1, 1)[:, 0]))
 
-            # if torch.isnan(loss_perturbation_depth).sum() == 0:
-            #     loss += depth_weight * loss_perturbation_depth
+            if torch.isnan(loss_perturbation_depth).sum() == 0:
+                loss += depth_weight * loss_perturbation_depth
             
             
             ### feature loss
@@ -146,7 +146,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             loss_feature = cosine_similarity_loss(pred_feature, ref_feature)
             
             feature_loss_weight = 0.05
-            loss += feature_loss_weight * loss_feature 
+            # loss += feature_loss_weight * loss_feature 
 
         loss.backward()
 
